@@ -1,11 +1,44 @@
 # Environments
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Config & credentials
 credentials.json
 token.json
 
+# Dependencies
+node_modules/
+jspm_packages/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
 # Temporary files
 .tmp/
+.temp/
 __pycache__/
 *.pyc
+.DS_Store
+Thumbs.db
+
+# Project-specific
+*.log
+.gemini/
+brain/
+implementation_plan.md
+task.md
+walkthrough.md
+*.webp
+*.png
+*.jpg
+# Note: Keep assets/ images, but exclude large temp artifacts
+!assets/*.jpg
+!assets/*.png
+!assets/*.webp
+!assets/*.svg
