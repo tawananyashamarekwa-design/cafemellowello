@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order | Cafe Mello Wello</title>
+    <meta name="google-site-verification" content="3imMiFJiIYotS5BoaxIlmxE30NHC7SPlrc_xK23HI1g" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cart.css">
+    <!-- Theme Logic (In head to prevent flash) -->
+    <script src="theme.js"></script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Cafe Mello Wello" class="nav-logo-img">
+                <span class="logo-text">Cafe Mello Wello</span>
+            </a>
+            <div class="nav-links desktop-links">
+                <a href="catalog.html">Catalog</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Contact <i data-lucide="chevron-down"
+                            style="width:12px; height:12px; vertical-align: middle;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://www.instagram.com/_mello_bakes_?igsh=cnF2Nzk2YXVyYWY2" target="_blank"
+                            class="dropdown-item">
+                            <i data-lucide="instagram"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/263775246462" target="_blank" class="dropdown-item">
+                            <i data-lucide="message-circle"></i> WhatsApp
+                        </a>
+                        <a href="https://maps.app.goo.gl/jxmANfMUR6UcZBi1A" target="_blank" class="dropdown-item">
+                            <i data-lucide="map-pin"></i> Location
+                        </a>
+                        <a href="mailto:cafemello100@gmail.com" class="dropdown-item">
+                            <i data-lucide="mail"></i> Email
+                        </a>
+                    </div>
+                </div>
+                <a href="cart.html" class="cart-link" style="color: var(--color-primary)">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="mobile-nav-toggle">
+                <a href="cart.html" class="cart-link mobile-cart-link" style="color: var(--color-primary)">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count" id="cart-count-mobile">0</span>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Open Menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo" style="height: 32px;">
+                <span class="logo-text" style="font-size: 1.2rem;">Mello Wello</span>
+            </a>
+            <button id="mobile-menu-close" aria-label="Close Menu">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="catalog.html" class="mobile-link">Catalog</a>
+            <a href="#about" class="mobile-link">About</a>
+            <div class="mobile-contact-section">
+                <p class="section-label">Connect With Us</p>
+                <div class="mobile-social-grid">
+                    <a href="https://www.instagram.com/_mello_bakes_?igsh=cnF2Nzk2YXVyYWY2" target="_blank"
+                        class="social-btn">
+                        <i data-lucide="instagram"></i>
+                    </a>
+                    <a href="https://wa.me/263775246462" target="_blank" class="social-btn">
+                        <i data-lucide="message-circle"></i>
+                    </a>
+                    <a href="https://maps.app.goo.gl/jxmANfMUR6UcZBi1A" target="_blank" class="social-btn">
+                        <i data-lucide="map-pin"></i>
+                    </a>
+                    <a href="mailto:cafemello100@gmail.com" class="social-btn">
+                        <i data-lucide="mail"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu-footer">
+            <p>&copy; 2026 Cafe Mello Wello</p>
+        </div>
+    </div>
+
+    <!-- Cart Header -->
+    <header class="page-header header-small">
+        <div class="header-content fade-in-up">
+            <h1 class="page-title">Your Order</h1>
+        </div>
+    </header>
+
+    <!-- Cart Container -->
+    <main class="cart-container fade-in-up delay-1">
+        <div class="cart-content">
+            <!-- Left Side: Items -->
+            <div class="cart-items-section">
+                <h2 class="section-heading">Order Summary</h2>
+                <div id="cart-items-container" class="cart-items-container">
+                    <!-- Items injected by JS -->
+                    <div class="empty-cart-msg">Your order list is empty.</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Total & Form -->
+            <div class="cart-summary-section">
+                <div class="summary-card">
+                    <h2 class="section-heading">Order Details</h2>
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal">$0.00</span>
+                    </div>
+
+                    <div class="summary-row total-row">
+                        <span>Total Estimate</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+
+                    <form id="order-form" class="order-form" onsubmit="submitOrder(event)">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" required placeholder="Jane Doe">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required placeholder="jane@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Requested Pickup Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+
+                        <!-- Hidden fields for Formspree/Notifications -->
+                        <input type="hidden" name="Order-Summary" id="form-summary">
+                        <input type="hidden" name="Total-Estimate" id="form-total">
+                        <input type="hidden" name="_subject" value="New Order from Cafe Mello Wello">
+
+                        <div class="form-group">
+                            <label for="notes">Special Requests</label>
+                            <textarea id="notes" name="Notes" rows="3"
+                                placeholder="Allergies, custom messages, etc."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-submit" id="submit-btn" disabled>
+                            Submit Order Request
+                        </button>
+                        <p class="form-note">No payment required now. We will contact you to confirm and process
+                            payment.</p>
+                    </form>
+
+                    <!-- Success Message (Hidden) -->
+                    <div id="success-msg" class="success-msg" style="display: none;">
+                        <i data-lucide="check-circle" class="success-icon"></i>
+                        <h3>Order Requested!</h3>
+                        <p>We've received your request. To speed up processing, please send your order summary to us via
+                            WhatsApp or Email using the buttons below.</p>
+
+                        <!-- Order Details Display -->
+                        <div id="success-order-details" class="success-order-details">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div class="success-actions">
+                            <button onclick="sendOrderWhatsApp()" class="btn btn-primary btn-whatsapp">
+                                <i data-lucide="message-circle"></i> Send via WhatsApp
+                            </button>
+                            <button onclick="sendOrderEmail()" class="btn btn-outline btn-email">
+                                <i data-lucide="mail"></i> Send via Email
+                            </button>
+                        </div>
+
+                        <a href="catalog.html" class="btn-text" style="margin-top: 1.5rem; display: inline-block;">
+                            <i data-lucide="arrow-left" style="width: 14px; height: 14px; vertical-align: middle;"></i>
+                            Return to Catalog
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Ensure date picker min date is today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+    </script>
+</body>
+
+</html>

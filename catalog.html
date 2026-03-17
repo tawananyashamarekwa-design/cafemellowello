@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Catalog | Custom Cakes & Gourmet Snacks | Cafe Mello Wello</title>
+    <meta name="google-site-verification" content="3imMiFJiIYotS5BoaxIlmxE30NHC7SPlrc_xK23HI1g" />
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="canonical" href="https://cafemellowello.com/catalog.html">
+    <meta name="description"
+        content="Explore our artisanal collection of Bento cakes, wedding cakes, cupcakes, and savory snacks. Handcrafted with premium ingredients in Harare.">
+
+    <!-- Social Meta Tags -->
+    <meta property="og:title" content="Our Catalog | Cafe Mello Wello">
+    <meta property="og:description" content="Browse our premium selection of handcrafted cakes and savory delicacies.">
+    <meta property="og:image" content="https://cafemellowello.com/assets/IMG-20260311-WA0013.jpg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="catalog.css">
+    <!-- Theme Logic (In head to prevent flash) -->
+    <script src="theme.js"></script>
+</head>
+
+<body>
+
+    <!-- Navigation (Dark Background for inner pages) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Cafe Mello Wello" class="nav-logo-img">
+                <span class="logo-text">Cafe Mello Wello</span>
+            </a>
+            <div class="nav-links desktop-links">
+                <a href="catalog.html">Catalog</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-trigger">Contact <i data-lucide="chevron-down"
+                            style="width:12px; height:12px; vertical-align: middle;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://www.instagram.com/_mello_bakes_?igsh=cnF2Nzk2YXVyYWY2" target="_blank"
+                            class="dropdown-item">
+                            <i data-lucide="instagram"></i> Instagram
+                        </a>
+                        <a href="https://wa.me/263775246462" target="_blank" class="dropdown-item">
+                            <i data-lucide="message-circle"></i> WhatsApp
+                        </a>
+                        <a href="https://maps.app.goo.gl/jxmANfMUR6UcZBi1A" target="_blank" class="dropdown-item">
+                            <i data-lucide="map-pin"></i> Location
+                        </a>
+                        <a href="mailto:cafemello100@gmail.com" class="dropdown-item">
+                            <i data-lucide="mail"></i> Email
+                        </a>
+                    </div>
+                </div>
+                <a href="cart.html" class="cart-link">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="mobile-nav-toggle">
+                <a href="cart.html" class="cart-link mobile-cart-link">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count" id="cart-count-mobile">0</span>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Open Menu">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="Logo" style="height: 32px;">
+                <span class="logo-text" style="font-size: 1.2rem;">Mello Wello</span>
+            </a>
+            <button id="mobile-menu-close" aria-label="Close Menu">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="catalog.html" class="mobile-link active">Catalog</a>
+            <a href="#about" class="mobile-link">About</a>
+            <div class="mobile-contact-section">
+                <p class="section-label">Connect With Us</p>
+                <div class="mobile-social-grid">
+                    <a href="https://www.instagram.com/_mello_bakes_?igsh=cnF2Nzk2YXVyYWY2" target="_blank"
+                        class="social-btn">
+                        <i data-lucide="instagram"></i>
+                    </a>
+                    <a href="https://wa.me/263775246462" target="_blank" class="social-btn">
+                        <i data-lucide="message-circle"></i>
+                    </a>
+                    <a href="https://maps.app.goo.gl/jxmANfMUR6UcZBi1A" target="_blank" class="social-btn">
+                        <i data-lucide="map-pin"></i>
+                    </a>
+                    <a href="mailto:cafemello100@gmail.com" class="social-btn">
+                        <i data-lucide="mail"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-menu-footer">
+            <p>&copy; 2026 Cafe Mello Wello</p>
+        </div>
+    </div>
+
+    <!-- Catalog Header -->
+    <header class="page-header">
+        <div class="header-content fade-in-up">
+            <h1 class="page-title">Our Delicacies</h1>
+            <p class="page-subtitle">Minimalist elegance handcrafted with passion and the finest ingredients.</p>
+        </div>
+    </header>
+
+    <!-- Catalog Section -->
+    <main class="catalog-container">
+        <!-- Category Filter -->
+        <div class="category-filters fade-in-up delay-1">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="bento-cakes">Bento Cakes</button>
+            <button class="filter-btn" data-filter="event-cakes">Event Cakes</button>
+            <button class="filter-btn" data-filter="cupcakes">Cupcakes</button>
+            <button class="filter-btn" data-filter="wedding-cakes">Wedding Cakes</button>
+            <button class="filter-btn" data-filter="meat-deluxe">Meat Deluxe</button>
+            <button class="filter-btn" data-filter="pastries">Pastries</button>
+            <button class="filter-btn" data-filter="wraps-tacos">Wraps & Tacos</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be injected here via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="catalog.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
