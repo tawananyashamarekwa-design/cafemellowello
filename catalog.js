@@ -119,7 +119,7 @@ const products = [
         category: 'wedding-cakes',
         price: 150.00,
         description: 'A stunning 3-tier ivory fondant cake with hand-piped lace details and pearl accents. Price varies by size.',
-        image: 'https://images.unsplash.com/photo-1525203135335-74d272fc8d9c?w=500'
+        image: 'assets/ivory_elegance_tier.png'
     },
     {
         id: 'wedding-04',
@@ -127,7 +127,7 @@ const products = [
         category: 'wedding-cakes',
         price: 120.00,
         description: 'Clean, modern 2-tier wedding cake with smooth white buttercream and a single statement bloom.',
-        image: 'https://images.unsplash.com/photo-1515411216463-7301017c3874?w=500'
+        image: 'assets/minimalist_white_wedding.png'
     },
 
     // === MEAT DELUXE (per dozen) ===
@@ -195,7 +195,7 @@ const products = [
         category: 'pastries',
         price: 12.00,
         description: 'Savory sausage meat wrapped in light, buttery puff pastry. (Price per dozen)',
-        image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500'
+        image: 'https://images.unsplash.com/photo-1673960782730-ab13fc062d6d?auto=format&fit=crop&q=80&w=1200'
     },
 
     // === WRAPS & TACOS (per dozen) ===
