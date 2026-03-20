@@ -135,13 +135,52 @@
                     <h2 class="section-heading">Order Details</h2>
 
                     <div class="summary-row">
-                        <span>Subtotal</span>
+                        <span>Items Subtotal</span>
                         <span id="cart-subtotal">$0.00</span>
                     </div>
 
+                    <div class="summary-row fee-row" id="row-delivery" style="display: none;">
+                        <span>Delivery Fee</span>
+                        <span id="cart-delivery-fee">TBD</span>
+                    </div>
+
+                    <div class="summary-row fee-row" id="row-emergency" style="display: none;">
+                        <span class="fee-label">
+                            Emergency Fee
+                            <span class="fee-info" title="For orders within 48 hours">
+                                <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                            </span>
+                        </span>
+                        <span id="cart-emergency-fee">$10.00</span>
+                    </div>
+
                     <div class="summary-row total-row">
-                        <span>Total Estimate</span>
+                        <span>Total Amount</span>
                         <span id="cart-total">$0.00</span>
+                    </div>
+
+                    <div class="summary-row deposit-row">
+                        <span class="deposit-label">50% Deposit Required</span>
+                        <span id="cart-deposit">$0.00</span>
+                    </div>
+
+                    <div class="summary-row balance-row">
+                        <span>Balance (Upon Pickup/ Delivery)</span>
+                        <span id="cart-balance">$0.00</span>
+                    </div>
+
+                    <!-- Order Policies Notice -->
+                    <div class="order-policies">
+                        <h3 class="policies-title">
+                            <i data-lucide="shield-check" style="width: 18px; color: var(--color-primary);"></i>
+                            Order Policies
+                        </h3>
+                        <ul class="policies-list">
+                            <li><strong>50% Deposit</strong> required to confirm your order.</li>
+                            <li><strong>48h Notice</strong> required for all orders.</li>
+                            <li><strong>Emergency Fee</strong> of $10 for orders < 48h.</li>
+                            <li><strong>Delivery Fee</strong> to be confirmed via WhatsApp.</li>
+                        </ul>
                     </div>
 
                     <form id="order-form" class="order-form" onsubmit="submitOrder(event)">
@@ -156,8 +195,33 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Requested Pickup Date</label>
-                            <input type="date" id="date" required>
+                            <label for="date">Requested Pickup/ Delivery Date</label>
+                            <input type="date" id="date" required onchange="updateTotals()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Service Type</label>
+                            <div class="service-type-grid">
+                                <label class="service-option">
+                                    <input type="radio" name="service_type" value="pickup" checked onchange="toggleServiceType()">
+                                    <div class="option-content">
+                                        <i data-lucide="package" style="width: 18px;"></i>
+                                        <span>Pickup</span>
+                                    </div>
+                                </label>
+                                <label class="service-option">
+                                    <input type="radio" name="service_type" value="delivery" onchange="toggleServiceType()">
+                                    <div class="option-content">
+                                        <i data-lucide="truck" style="width: 18px;"></i>
+                                        <span>Delivery</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="address-group" style="display: none;">
+                            <label for="address">Delivery Address</label>
+                            <textarea id="address" name="Address" rows="2" placeholder="Full delivery address..."></textarea>
                         </div>
 
                         <!-- Hidden fields for Formspree/Notifications -->
