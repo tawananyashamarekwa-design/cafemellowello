@@ -318,28 +318,26 @@ function renderProducts(filter = 'all') {
     grid.style.minHeight = '300px';
     grid.innerHTML = loaderHtml;
 
-    // Artificial Delay for animation
-    setTimeout(() => {
-        // Reset grid display
-        grid.style.display = 'grid';
-        grid.style.minHeight = 'auto';
-        grid.innerHTML = '';
+    // Artificial Delay removed for performance
+    // Reset grid display
+    grid.style.display = 'grid';
+    grid.style.minHeight = 'auto';
+    grid.innerHTML = '';
 
-        // Render
-        filteredProducts.forEach((product, index) => {
-            const cardHtml = createProductCard(product);
-            grid.insertAdjacentHTML('beforeend', cardHtml);
+    // Render
+    filteredProducts.forEach((product, index) => {
+        const cardHtml = createProductCard(product);
+        grid.insertAdjacentHTML('beforeend', cardHtml);
 
-            // Add staggered animation delay
-            const card = grid.lastElementChild;
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+        // Add staggered animation delay
+        const card = grid.lastElementChild;
+        card.style.animationDelay = `${index * 0.05}s`; // Reduced delay
+    });
 
-        // Re-initialize icons for newly added elements
-        if (window.lucide) {
-            lucide.createIcons();
-        }
-    }, 1200); // 1.2 second fake load time
+    // Re-initialize icons for newly added elements
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 // Setup Filters
