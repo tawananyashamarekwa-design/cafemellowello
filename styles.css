@@ -239,7 +239,6 @@
     opacity: 0.3;
     pointer-events: none;
     animation: float-particle 10s infinite linear;
-    will-change: transform;
 }
 
 @keyframes float-particle {
@@ -905,7 +904,6 @@ body:not(.landing-page) .navbar {
     border-radius: 50%;
     animation: float 15s infinite ease-in-out;
     filter: blur(20px);
-    will-change: transform;
 }
 
 .shape-1 {
@@ -942,12 +940,20 @@ body:not(.landing-page) .navbar {
 }
 
 @keyframes float {
-    0%, 100% {
+    0% {
         transform: translate(0px, 0px) scale(1);
     }
 
-    50% {
-        transform: translate(30px, -30px) scale(1.05);
+    33% {
+        transform: translate(50px, -50px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-30px, 30px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0px, 0px) scale(1);
     }
 }
 

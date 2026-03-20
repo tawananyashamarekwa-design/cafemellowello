@@ -9,7 +9,7 @@ const products = [
         category: 'bento-cakes',
         price: 20.00,
         description: 'A charming mini cake in a clear bento box with pastel frosting and hand-piped floral details. Starting at 6".',
-        image: 'assets/IMG-20260311-WA0013.jpg'
+        image: 'assets/IMG-20260311-WA0013.webp'
     },
     {
         id: 'bento-02',
@@ -17,7 +17,7 @@ const products = [
         category: 'bento-cakes',
         price: 35.00,
         description: 'A custom space-themed bento cake with matching frosted cupcakes. Perfect for little astronauts.',
-        image: 'assets/bento_space.jpg'
+        image: 'assets/bento_space.webp'
     },
     {
         id: 'bento-03',
@@ -43,7 +43,7 @@ const products = [
         category: 'event-cakes',
         price: 45.00,
         description: 'A beautiful pink frosted cake surrounded by matching cupcakes, with a customizable mirror topper.',
-        image: 'assets/IMG-20260311-WA0012.jpg'
+        image: 'assets/IMG-20260311-WA0012.webp'
     },
     {
         id: 'event-03',
@@ -51,7 +51,7 @@ const products = [
         category: 'event-cakes',
         price: 45.00,
         description: 'Sophisticated deep blue and cream ombre cake with metallic gold accents and minimalist lettering.',
-        image: 'assets/IMG-20260311-WA0002.jpg'
+        image: 'assets/IMG-20260311-WA0002.webp'
     },
     {
         id: 'event-04',
@@ -59,7 +59,7 @@ const products = [
         category: 'event-cakes',
         price: 45.00,
         description: 'Elegant pink velvet cake topped with artisanal buttercream roses and delicate pearl sprinkles.',
-        image: 'assets/IMG-20260311-WA0005.jpg'
+        image: 'assets/IMG-20260311-WA0005.webp'
     },
     {
         id: 'event-05',
@@ -67,7 +67,7 @@ const products = [
         category: 'event-cakes',
         price: 55.00,
         description: 'Elegant white and blue cake topped with a golden crown and personalized mirror nameplate.',
-        image: 'assets/crown_cake.jpg'
+        image: 'assets/crown_cake.webp'
     },
     {
         id: 'event-06',
@@ -75,7 +75,7 @@ const products = [
         category: 'event-cakes',
         price: 50.00,
         description: 'Stunning purple birthday cake decorated with elegant edible pearls and golden lettering.',
-        image: 'assets/purple_pearl.jpg'
+        image: 'assets/purple_pearl.webp'
     },
 
     // === CUPCAKES ===
@@ -93,7 +93,7 @@ const products = [
         category: 'cupcakes',
         price: 18.00,
         description: 'Floral-inspired cupcakes with soft pink rosettes and edible butterfly toppers. (Price per dozen)',
-        image: 'assets/IMG-20260311-WA0004.jpg'
+        image: 'assets/IMG-20260311-WA0004.webp'
     },
 
     // === WEDDING CAKES ===
@@ -103,7 +103,7 @@ const products = [
         category: 'wedding-cakes',
         price: 250.00,
         description: 'A stunning multi-tier pink and white cake decorated with delicate fresh-looking blooms and a gold hoop.',
-        image: 'assets/wedding_cake_floral.jpg'
+        image: 'assets/wedding_cake_floral.webp'
     },
     {
         id: 'wedding-02',
@@ -111,7 +111,7 @@ const products = [
         category: 'wedding-cakes',
         price: 350.00,
         description: 'A majestic tower featuring pink fondant ruffles and an elegant gold hoop separator.',
-        image: 'assets/wedding_cake_tall.jpg'
+        image: 'assets/wedding_cake_tall.webp'
     },
     {
         id: 'wedding-03',
@@ -119,7 +119,7 @@ const products = [
         category: 'wedding-cakes',
         price: 150.00,
         description: 'A stunning 3-tier ivory fondant cake with hand-piped lace details and pearl accents. Price varies by size.',
-        image: 'assets/ivory_elegance_tier.png'
+        image: 'assets/ivory_elegance_tier.webp'
     },
     {
         id: 'wedding-04',
@@ -127,7 +127,7 @@ const products = [
         category: 'wedding-cakes',
         price: 120.00,
         description: 'Clean, modern 2-tier wedding cake with smooth white buttercream and a single statement bloom.',
-        image: 'assets/minimalist_white_wedding.png'
+        image: 'assets/minimalist_white_wedding.webp'
     },
 
     // === MEAT DELUXE (per dozen) ===
@@ -155,7 +155,7 @@ const products = [
         category: 'pastries',
         price: 7.00,
         description: 'Crispy triangular pastries with savory meat or vegetable filling. Box of dozen.',
-        image: 'assets/IMG-20260311-WA0008.jpg'
+        image: 'assets/IMG-20260311-WA0008.webp'
     },
     {
         id: 'pastry-02',
@@ -163,7 +163,7 @@ const products = [
         category: 'pastries',
         price: 7.00,
         description: 'Perfectly fried crispy samoosas fresh out of the pan.',
-        image: 'assets/samoosas_close.jpg'
+        image: 'assets/samoosas_close.webp'
     },
     {
         id: 'pastry-03',
@@ -171,7 +171,7 @@ const products = [
         category: 'pastries',
         price: 15.00,
         description: 'Crescent-shaped flaky pastries with a spiced gourmet filling, topped with seeds.',
-        image: 'assets/IMG-20260311-WA0003.jpg'
+        image: 'assets/IMG-20260311-WA0003.webp'
     },
     {
         id: 'pastry-04',
@@ -179,7 +179,7 @@ const products = [
         category: 'pastries',
         price: 45.00,
         description: 'A grand selection of crispy spring rolls and savory samoosas, served on a platter.',
-        image: 'assets/IMG-20260311-WA0006.jpg'
+        image: 'assets/IMG-20260311-WA0006.webp'
     },
     {
         id: 'pastry-05',
@@ -187,7 +187,7 @@ const products = [
         category: 'pastries',
         price: 55.00,
         description: 'A massive assortment featuring half moons, spring rolls, and samoosas for events.',
-        image: 'assets/IMG-20260311-WA0011.jpg'
+        image: 'assets/IMG-20260311-WA0011.webp'
     },
     {
         id: 'pastry-06',
@@ -318,26 +318,28 @@ function renderProducts(filter = 'all') {
     grid.style.minHeight = '300px';
     grid.innerHTML = loaderHtml;
 
-    // Artificial Delay removed for performance
-    // Reset grid display
-    grid.style.display = 'grid';
-    grid.style.minHeight = 'auto';
-    grid.innerHTML = '';
+    // Minimal delay for smooth transition (reduced from 1.2s)
+    setTimeout(() => {
+        // Reset grid display
+        grid.style.display = 'grid';
+        grid.style.minHeight = 'auto';
+        grid.innerHTML = '';
 
-    // Render
-    filteredProducts.forEach((product, index) => {
-        const cardHtml = createProductCard(product);
-        grid.insertAdjacentHTML('beforeend', cardHtml);
+        // Render
+        filteredProducts.forEach((product, index) => {
+            const cardHtml = createProductCard(product);
+            grid.insertAdjacentHTML('beforeend', cardHtml);
 
-        // Add staggered animation delay
-        const card = grid.lastElementChild;
-        card.style.animationDelay = `${index * 0.05}s`; // Reduced delay
-    });
+            // Add staggered animation delay
+            const card = grid.lastElementChild;
+            card.style.animationDelay = `${index * 0.05}s`; // Faster animation
+        });
 
-    // Re-initialize icons for newly added elements
-    if (window.lucide) {
-        lucide.createIcons();
-    }
+        // Re-initialize icons for newly added elements
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    }, 100); 
 }
 
 // Setup Filters
