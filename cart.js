@@ -8,7 +8,7 @@ const DELIVERY_RATE_PER_KM = 0.30; // $0.30 per km
 // ─── ⚙️  SET YOUR GOOGLE MAPS API KEY HERE ──────────────────────────────────
 // Get a free key at: console.cloud.google.com
 // Enable: Maps JavaScript API, Places API, Distance Matrix API
-const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // ← replace this
+const GOOGLE_MAPS_API_KEY = 'AIzaSyCTZ-oysNc8dCduVbNcNKyyvRyFWi9uuyk'; // ← replace this
 
 // ─── Delivery Map State ─────────────────────────────────────────────────────
 let deliveryMap = null;
