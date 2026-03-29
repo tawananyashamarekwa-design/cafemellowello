@@ -563,6 +563,15 @@
 }
 
 
+/* Google autocomplete dropdown z-index fix */
+.pac-container {
+    z-index: 99999 !important;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    font-family: inherit;
+}
+
 /* Distance / fee chip */
 .delivery-chip {
     display: flex;

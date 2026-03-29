@@ -2,177 +2,232 @@
 
 // ─── Bakery origin (Cafe Mello Wello) ──────────────────────────────────────
 // To find your exact coords: open Google Maps → right-click your bakery → copy the lat/lng
-const BAKERY_COORDS = [-17.8292, 31.0522]; // [lat, lng] ← update to your exact location
+const BAKERY_COORDS = { lat: -17.8292, lng: 31.0522 }; // Harare, Zimbabwe
 const DELIVERY_RATE_PER_KM = 0.30; // $0.30 per km
 
-// ─── Delivery Map State (Leaflet) ───────────────────────────────────────────
-let leafletMap = null;
-let customerMarker = null;
+// ─── ⚙️  SET YOUR GOOGLE MAPS API KEY HERE ──────────────────────────────────
+// Get a free key at: console.cloud.google.com
+// Enable: Maps JavaScript API, Places API, Distance Matrix API
+const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // ← replace this
+
+// ─── Delivery Map State ─────────────────────────────────────────────────────
+let deliveryMap = null;
 let bakeryMarker = null;
-let routeLayer = null;
+let customerMarker = null;
+let directionsService = null;
+let directionsRenderer = null;
+let placesAutocomplete = null;
+let distanceMatrixService = null;
 let currentDeliveryFee = 0;
 let currentDeliveryKm = 0;
-let geocodeTimer = null;  // debounce for address search
+let mapsApiReady = false;
 
-// ─── Init Leaflet Map ─────────────────────────────────────────────────────
+// ─── Dynamically load the Google Maps SDK (only when needed) ────────────────
+let mapsScriptInjected = false;
+function loadMapsSDK() {
+    if (mapsScriptInjected || !GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY') {
+        if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY') {
+            const mapEl = document.getElementById('delivery-map');
+            if (mapEl) {
+                mapEl.style.height = '60px';
+                mapEl.innerHTML = '<p style="padding:1rem;color:var(--color-primary);font-size:0.85rem;text-align:center;">⚠️ Map unavailable — Google Maps API key not set in cart.js</p>';
+            }
+        }
+        return;
+    }
+    mapsScriptInjected = true;
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places,geometry&callback=initGoogleMapsReady`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+}
+
+// Called by the Google Maps SDK ?callback= parameter
+window.initGoogleMapsReady = function () {
+    mapsApiReady = true;
+    // If delivery is already selected when the API loads, init the map now
+    const isDelivery = document.querySelector('input[name="service_type"]:checked')?.value === 'delivery';
+    if (isDelivery) initDeliveryMap();
+};
+
+// ─── Init / Build the Delivery Map ─────────────────────────────────────────
 function initDeliveryMap() {
-    if (leafletMap) return; // already initialised
-    if (typeof L === 'undefined') { console.warn('Leaflet not loaded'); return; }
+    // Already initialised
+    if (deliveryMap) return;
+
+    // API hasn't loaded yet — it will call initGoogleMapsReady() when ready
+    if (!mapsApiReady || !window.google) return;
 
     const mapEl = document.getElementById('delivery-map');
     if (!mapEl) return;
 
-    // Create map
-    leafletMap = L.map('delivery-map', { zoomControl: true }).setView(BAKERY_COORDS, 13);
-
-    // OpenStreetMap tiles (free, no key)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-    }).addTo(leafletMap);
-
-    // Bakery marker (red)
-    const bakeryIcon = L.divIcon({
-        className: '',
-        html: `<div style="width:16px;height:16px;background:#e66767;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
+    // Create map centred on bakery
+    deliveryMap = new google.maps.Map(mapEl, {
+        center: BAKERY_COORDS,
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
+        styles: [
+            { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] }
+        ]
     });
-    bakeryMarker = L.marker(BAKERY_COORDS, { icon: bakeryIcon, title: 'Cafe Mello Wello (Bakery)' })
-        .addTo(leafletMap)
-        .bindPopup('🍰 <strong>Cafe Mello Wello</strong><br>Your bakery')
-        .openPopup();
 
-    // Customer marker (blue, draggable) - starts at bakery
-    const customerIcon = L.divIcon({
-        className: '',
-        html: `<div style="width:20px;height:20px;background:#5c8fd6;border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 6px rgba(0,0,0,.3);"></div>`,
-        iconSize: [20, 20],
-        iconAnchor: [10, 20]
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true,
+        polylineOptions: { strokeColor: '#e66767', strokeWeight: 5, strokeOpacity: 0.8 }
     });
-    customerMarker = L.marker(BAKERY_COORDS, { icon: customerIcon, draggable: true, title: 'Your delivery location' })
-        .addTo(leafletMap)
-        .bindPopup('📍 <strong>Delivery here</strong><br>Drag to adjust');
+    directionsRenderer.setMap(deliveryMap);
+    distanceMatrixService = new google.maps.DistanceMatrixService();
+
+    // Bakery marker (fixed, branded pin)
+    bakeryMarker = new google.maps.Marker({
+        position: BAKERY_COORDS,
+        map: deliveryMap,
+        title: 'Cafe Mello Wello (Bakery)',
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: '#e66767',
+            fillOpacity: 1,
+            strokeColor: '#fff',
+            strokeWeight: 2
+        }
+    });
+
+    // Customer marker (draggable)
+    customerMarker = new google.maps.Marker({
+        position: BAKERY_COORDS,
+        map: deliveryMap,
+        title: 'Your delivery location',
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        icon: {
+            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+            scale: 7,
+            fillColor: '#5c8fd6',
+            fillOpacity: 1,
+            strokeColor: '#fff',
+            strokeWeight: 2
+        }
+    });
 
     // Drag end → recalculate
-    customerMarker.on('dragend', () => {
-        const { lat, lng } = customerMarker.getLatLng();
-        const addressInput = document.getElementById('address');
-        if (addressInput) addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-        fetchDistance([lat, lng]);
-        fetchRoute([lat, lng]);
+    customerMarker.addListener('dragend', () => {
+        const pos = customerMarker.getPosition();
+        document.getElementById('address').value = `${pos.lat().toFixed(5)}, ${pos.lng().toFixed(5)}`;
+        calculateDeliveryFee(pos);
+        drawRoute(pos);
     });
 
-    // Click on map → move customer marker
-    leafletMap.on('click', (e) => {
-        const { lat, lng } = e.latlng;
-        customerMarker.setLatLng([lat, lng]);
-        const addressInput = document.getElementById('address');
-        if (addressInput) addressInput.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-        fetchDistance([lat, lng]);
-        fetchRoute([lat, lng]);
+    // Click on map → move customer marker + recalculate
+    deliveryMap.addListener('click', (e) => {
+        customerMarker.setPosition(e.latLng);
+        document.getElementById('address').value = `${e.latLng.lat().toFixed(5)}, ${e.latLng.lng().toFixed(5)}`;
+        calculateDeliveryFee(e.latLng);
+        drawRoute(e.latLng);
     });
 
-    // Address search → geocode with Nominatim (debounced)
+    // Attach Places Autocomplete to the address input
     const addressInput = document.getElementById('address');
-    if (addressInput) {
-        addressInput.addEventListener('input', () => {
-            clearTimeout(geocodeTimer);
-            geocodeTimer = setTimeout(() => geocodeAddress(addressInput.value), 700);
+    if (addressInput && google.maps.places) {
+        // Define rough bounds for Harare
+        const harareBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(-18.0500, 30.9000), // SW corner approx
+            new google.maps.LatLng(-17.6500, 31.2000)  // NE corner approx
+        );
+
+        placesAutocomplete = new google.maps.places.Autocomplete(addressInput, {
+            fields: ['geometry', 'formatted_address'],
+            componentRestrictions: { country: 'zw' }, // RESTRICT TO ZIMBABWE ONLY
+            bounds: harareBounds,
+            strictBounds: true // Strongly prefer results within Harare bounds
+        });
+        
+        placesAutocomplete.addListener('place_changed', () => {
+            const place = placesAutocomplete.getPlace();
+            if (!place.geometry) return;
+            const loc = place.geometry.location;
+            deliveryMap.panTo(loc);
+            deliveryMap.setZoom(15);
+            customerMarker.setPosition(loc);
+            calculateDeliveryFee(loc);
+            drawRoute(loc);
         });
     }
-
-    // Force map to render correctly after container becomes visible
-    setTimeout(() => leafletMap.invalidateSize(), 100);
 }
 
-// ─── Geocode address with Nominatim ───────────────────────────────────────
-function geocodeAddress(query) {
-    if (!query || query.length < 4) return;
-    const chip = document.getElementById('delivery-distance-chip');
-    const chipText = document.getElementById('delivery-chip-text');
-    if (chip) chip.style.display = 'flex';
-    if (chipText) chipText.textContent = 'Searching address…';
-
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
-        headers: { 'Accept-Language': 'en' }
-    })
-    .then(r => r.json())
-    .then(results => {
-        if (!results.length) {
-            if (chipText) chipText.textContent = 'Address not found — try clicking the map';
-            return;
+// ─── Draw route between bakery and customer ─────────────────────────────────
+function drawRoute(destination) {
+    if (!directionsService || !directionsRenderer) return;
+    directionsService.route(
+        {
+            origin: BAKERY_COORDS,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING
+        },
+        (result, status) => {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+            }
         }
-        const { lat, lon } = results[0];
-        const latlng = [parseFloat(lat), parseFloat(lon)];
-        customerMarker.setLatLng(latlng);
-        leafletMap.flyTo(latlng, 15, { duration: 1 });
-        fetchDistance(latlng);
-        fetchRoute(latlng);
-    })
-    .catch(() => { if (chipText) chipText.textContent = 'Search failed — click the map instead'; });
+    );
 }
 
-// ─── Fetch road distance with OSRM (free, no key) ─────────────────────────
-function fetchDistance(destinationLatLng) {
-    const [bakeryLat, bakeryLng] = BAKERY_COORDS;
-    const [destLat, destLng] = destinationLatLng;
-    const url = `https://router.project-osrm.org/route/v1/driving/${bakeryLng},${bakeryLat};${destLng},${destLat}?overview=false`;
+// ─── Calculate Delivery Fee via Distance Matrix ─────────────────────────────
+function calculateDeliveryFee(destination) {
+    if (!distanceMatrixService) return;
 
     const chip = document.getElementById('delivery-distance-chip');
     const chipText = document.getElementById('delivery-chip-text');
     if (chip) chip.style.display = 'flex';
-    if (chipText) chipText.textContent = 'Calculating distance…';
+    if (chipText) chipText.textContent = 'Calculating…';
 
-    fetch(url)
-        .then(r => r.json())
-        .then(data => {
-            if (data.code !== 'Ok' || !data.routes.length) {
+    distanceMatrixService.getDistanceMatrix(
+        {
+            origins: [BAKERY_COORDS],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC
+        },
+        (response, status) => {
+            if (status !== 'OK') {
                 if (chipText) chipText.textContent = 'Could not calculate distance';
                 return;
             }
-            const distanceMeters = data.routes[0].distance;
+            const element = response.rows[0].elements[0];
+            if (element.status !== 'OK') {
+                if (chipText) chipText.textContent = 'Could not calculate distance';
+                return;
+            }
+
+            const distanceMeters = element.distance.value;
             const distanceKm = distanceMeters / 1000;
-            const fee = Math.ceil(distanceKm) * DELIVERY_RATE_PER_KM;
+            const fee = Math.ceil(distanceKm) * DELIVERY_RATE_PER_KM; // round up to next km
 
             currentDeliveryKm = distanceKm;
             currentDeliveryFee = fee;
 
+            // Update hidden inputs
             const hiddenKm = document.getElementById('delivery-distance-km');
             const hiddenFee = document.getElementById('delivery-fee-value');
             if (hiddenKm) hiddenKm.value = distanceKm.toFixed(1);
             if (hiddenFee) hiddenFee.value = fee.toFixed(2);
 
-            if (chipText) chipText.textContent = `${distanceKm.toFixed(1)} km · ${formatPrice(fee)} delivery fee`;
+            // Update chip
+            if (chipText) {
+                chipText.textContent = `${distanceKm.toFixed(1)} km · ${formatPrice(fee)} delivery fee`;
+            }
+
+            // Refresh order totals
             updateTotals();
-        })
-        .catch(() => { if (chipText) chipText.textContent = 'Network error — try again'; });
+        }
+    );
 }
 
-// ─── Draw route line with OSRM geometry ──────────────────────────────────
-function fetchRoute(destinationLatLng) {
-    if (!leafletMap) return;
-    const [bakeryLat, bakeryLng] = BAKERY_COORDS;
-    const [destLat, destLng] = destinationLatLng;
-    const url = `https://router.project-osrm.org/route/v1/driving/${bakeryLng},${bakeryLat};${destLng},${destLat}?geometries=geojson&overview=full`;
-
-    fetch(url)
-        .then(r => r.json())
-        .then(data => {
-            if (data.code !== 'Ok' || !data.routes.length) return;
-            // Remove previous route
-            if (routeLayer) leafletMap.removeLayer(routeLayer);
-            // Add new polyline
-            routeLayer = L.geoJSON(data.routes[0].geometry, {
-                style: { color: '#e66767', weight: 5, opacity: 0.8, dashArray: null }
-            }).addTo(leafletMap);
-            // Fit map to show both markers and route
-            const group = L.featureGroup([bakeryMarker, customerMarker, routeLayer]);
-            leafletMap.fitBounds(group.getBounds().pad(0.15));
-        })
-        .catch(() => {});
-}
-
+// ─── Render Cart Items ──────────────────────────────────────────────────────
 
 // ─── Render Cart Items ──────────────────────────────────────────────────────
 function renderCartItems() {
@@ -283,12 +338,16 @@ window.toggleServiceType = function () {
     }
 
     if (isDelivery) {
-        if (!leafletMap) {
+        // Reset fee if switching back from pickup
+        if (!deliveryMap) {
             currentDeliveryFee = 0;
             currentDeliveryKm = 0;
         }
-        // Init Leaflet map (no API key needed)
-        setTimeout(initDeliveryMap, 50);
+        // Load Maps SDK dynamically the first time, then init map
+        loadMapsSDK();
+        if (mapsApiReady) {
+            setTimeout(initDeliveryMap, 50);
+        }
     } else {
         currentDeliveryFee = 0;
         currentDeliveryKm = 0;
