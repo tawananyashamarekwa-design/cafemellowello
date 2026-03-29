@@ -19,6 +19,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="styles.min.css">
     <link rel="stylesheet" href="cart.css">
+    <!-- Leaflet.js (OpenStreetMap - no API key needed) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <!-- Theme Logic (In head to prevent flash) -->
     <script src="theme.js"></script>
 </head>
@@ -179,7 +181,7 @@
                             <li><strong>50% Deposit</strong> required to confirm your order.</li>
                             <li><strong>48h Notice</strong> required for all orders.</li>
                             <li><strong>Emergency Fee</strong> of $10 for orders < 48h.</li>
-                            <li><strong>Delivery Fee</strong> to be confirmed via WhatsApp.</li>
+                            <li><strong>Delivery Fee</strong> calculated at $0.30 / km from our bakery.</li>
                         </ul>
                     </div>
 
@@ -221,7 +223,30 @@
 
                         <div class="form-group" id="address-group" style="display: none;">
                             <label for="address">Delivery Address</label>
-                            <textarea id="address" name="Address" rows="2" placeholder="Full delivery address..."></textarea>
+                            <!-- Autocomplete search input -->
+                            <div class="map-search-wrapper">
+                                <i data-lucide="search" class="map-search-icon"></i>
+                                <input
+                                    type="text"
+                                    id="address"
+                                    name="Address"
+                                    placeholder="Search your delivery address…"
+                                    autocomplete="off"
+                                    required>
+                            </div>
+
+                            <!-- Embedded Google Map -->
+                            <div id="delivery-map" class="delivery-map" aria-label="Delivery location map"></div>
+
+                            <!-- Distance / Fee chip -->
+                            <div id="delivery-distance-chip" class="delivery-chip" style="display:none;">
+                                <i data-lucide="map-pin" style="width:14px;height:14px;"></i>
+                                <span id="delivery-chip-text">Calculating…</span>
+                            </div>
+
+                            <!-- Hidden inputs so form submission carries the values -->
+                            <input type="hidden" id="delivery-distance-km" name="Delivery-Distance">
+                            <input type="hidden" id="delivery-fee-value" name="Delivery-Fee">
                         </div>
 
                         <!-- Hidden fields for Formspree/Notifications -->
@@ -275,6 +300,7 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="app.js"></script>
     <script src="cart.js"></script>
     <script>

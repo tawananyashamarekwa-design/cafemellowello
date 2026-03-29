@@ -163,7 +163,7 @@ const products = [
         category: 'pastries',
         price: 7.00,
         description: 'Perfectly fried crispy samoosas fresh out of the pan.',
-        image: 'assets/samoosas_close.webp'
+        image: 'assets/samoosas_close.jpg'
     },
     {
         id: 'pastry-03',

@@ -504,3 +504,89 @@
     font-size: 1.1rem;
     border-top: 1px solid var(--text-main);
 }
+
+/* =========================================
+   DELIVERY MAP & DISTANCE FEATURE
+   ========================================= */
+
+/* Autocomplete search wrapper */
+.map-search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.map-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--color-primary);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.map-search-wrapper input#address {
+    width: 100%;
+    padding-left: 2.5rem !important;
+}
+
+/* Embedded map container */
+.delivery-map {
+    width: 100%;
+    height: 280px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    margin-top: 0.75rem;
+    background: var(--bg-main);
+    /* Shimmer effect while tiles load */
+    position: relative;
+}
+
+.delivery-map::before {
+    content: 'Loading map…';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    animation: map-shimmer 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes map-shimmer {
+    from { opacity: 0.4; }
+    to   { opacity: 0.9; }
+}
+
+
+/* Distance / fee chip */
+.delivery-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    padding: 0.45rem 0.9rem;
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    width: fit-content;
+    transition: all 0.3s ease;
+}
+
+.delivery-chip i {
+    flex-shrink: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .delivery-map {
+        height: 220px;
+    }
+}
